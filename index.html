@@ -23,6 +23,17 @@
      js.src = "https://connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
+  
+        // Check login status
+FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+});
+        
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
 </script>
     
     <div
@@ -31,6 +42,11 @@
   data-width="450"
   data-show-faces="true">
 </div>
+    
+<fb:login-button 
+  scope="public_profile,email"
+  onlogin="checkLoginState();">
+</fb:login-button>
     
     <a href="privacy.html">Privacy Policy</a>
 </body>
