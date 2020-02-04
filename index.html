@@ -25,9 +25,21 @@
    }(document, 'script', 'facebook-jssdk'));
   
         // Check login status
+        FB.getLoginStatus(function(response) {
+    if (response.authResponse) {
+        // logged in and connected user, someone you know
+        statusChangeCallback(response);
+        alert('Logged In');
+    } else {
+        // no user session available, someone you dont know
+        alert('Not logged');
+    }
+});
+/*
 FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
 });
+*/
         
 function checkLoginState() {
   FB.getLoginStatus(function(response) {
