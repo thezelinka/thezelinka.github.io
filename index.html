@@ -2,73 +2,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Hello world</title>
+    <title>Document</title>
 </head>
 <body>
     <script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '194216351980522',
-      xfbml      : true,
-      version    : 'v5.0'
-    });
-    FB.AppEvents.logPageView();
-  };
+        // Initialize Facebook API
+        (function(d, s, id) {
+            var js, fjs = d.getElementByTagName(s)[0];
+            if (d.getElementById(id))
+                return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-  
-        // Check login status
-        /*
-        FB.getLoginStatus(function(response) {
-    if (response.authResponse) {
-        // logged in and connected user, someone you know
-        statusChangeCallback(response);
-        alert('Logged In');
-    } else {
-        // no user session available, someone you dont know
-        alert('Not logged');
-    }
-});
-*/
-/*
-FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-});
-*/
-        
-function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    if (response.authResponse) {
-        // logged in and connected user, someone you know
-        alert('Logged In');
-    } else {
-        // no user session available, someone you dont know
-        alert('Not logged');
-    }
-    statusChangeCallback(response);
-  });
-}
-</script>
-    
-    <div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div>
-    
-<fb:login-button 
-  scope="public_profile,email,user_likes"
-  onlogin="checkLoginState();">
-</fb:login-button>
-    
-    <a href="privacy.html">Privacy Policy</a>
+        // Initialize Facebook app
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: '194216351980522',
+                xfbml: true,
+                version: 'v5.0'
+            });
+            FB.AppEvents.logPageView();
+        }
+
+        // Login
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                if (response.authResponse) {
+                    alert('Logged in');
+                    // Facebook Graph API request
+                    FB.api(
+                        '/me',
+                        'GET',
+                        {"fields":"likes"},
+                        function(response) {
+                            console.log(response);
+                        }
+                    );
+                } else {
+                    alert('Login failed');
+                }
+                statusChangeCallback(response);
+            });
+        }
+        window.onload(checkLoginState());
+    </script>
+
+    <fb:login-button
+        scope="public_profile,email,user_likes"
+        onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <a href="./privacy.html">Privacy policy</a>
 </body>
 </html>
